@@ -1,3 +1,6 @@
+Note: This addon was originally hosted on https://gitlab.com/dein0s_wow_vanilla 
+but was re-uploaded here as it was no longer accessible
+
 This addon is an external module for [pfUI](https://gitlab.com/shagu/pfUI) addon.
 
 ## Screenshots
