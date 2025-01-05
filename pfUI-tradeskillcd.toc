@@ -1,0 +1,12 @@
+## Interface: 11200
+## Title: |cff33ffccpf|cffffffffUI|cffaaaaaa [Tradeskill CD]
+## Author: dein0s
+## Notes: External module for |cff33ffccpf|cffffffffUI that allows you to track tradeskill cooldowns
+## Version: 0.4
+## Dependencies: pfUI
+## X-LocalName: Tradeskill CD
+
+# main
+pfUI-tradeskillcd.lua
+pfUI-tradeskillcd-config.lua
+pfUI-tradeskillcd-gui.lua
