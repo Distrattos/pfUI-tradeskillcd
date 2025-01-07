@@ -318,6 +318,7 @@ pfUI:RegisterModule("tradeskillcd", function ()
   pfUI.tradeskillcd:SetScript("OnEvent", function()
     if event == "VARIABLES_LOADED" then
       config = C.tradecd
+      ScanSpellbook()
     else
       ReadyAnnounce()
     end
