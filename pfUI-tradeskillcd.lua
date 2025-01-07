@@ -258,7 +258,7 @@ pfUI:RegisterModule("tradeskillcd", function ()
 
     -- hook pfPanelWidgetClock:Tooltip
     local delayTooltipHook = CreateFrame("Frame")
-    local delayedExecutionTime = GetTime() + 1
+    local delayedExecutionTime = GetTime() + .1
 
 
     delayTooltipHook:SetScript("OnUpdate", function()
