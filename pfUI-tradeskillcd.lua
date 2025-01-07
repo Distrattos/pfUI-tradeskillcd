@@ -50,7 +50,7 @@ pfUI:RegisterModule("tradeskillcd", function ()
     ["11024"] = {t = 600, i = 5}, -- Evergreen Herb Casing
     ["6037"] = {t = 172800, i = 1}, -- Truesilver Bar
     ["3577"] = {t = 172800, i = 1}, -- Gold Bar
-        -- ["21536"] = {t = 86400,  i = 5}, -- Elune Stone
+    -- ["21536"] = {t = 86400,  i = 5}, -- Elune Stone
   }
 
   local tradeskill_tools = {
