@@ -254,34 +254,57 @@ pfUI:RegisterModule("tradeskillcd", function ()
     end
   end
 
-  -- hook pfPanelWidgetClock:Tooltip
-  local widget_clock = getglobal("pfPanelWidgetClock")
-  widget_clock.Old_Tooltip_tradeskillcd = widget_clock.Tooltip
-  widget_clock.Tooltip = function()
-    local unknown = true
-    widget_clock.Old_Tooltip_tradeskillcd()
-    GameTooltip:AddLine(" ")
-    GameTooltip:AddLine(ColorText("grey", "Tradeskill Cooldowns"))
-    if config.show_current == "1" then
-      for ti in pfUI_cache["tradeskillcd"][realm_name][player_name] do
-        local timeleft = FormatTimeleft(pfUI_cache["tradeskillcd"][realm_name][player_name][ti])
-        unknown = false
-        GameTooltip:AddDoubleLine(ColorText("white", " -> " .. tradeskill_list[ti].name), timeleft)
-        -- GameTooltip:AddDoubleLine("|cffffffff -> " .. tradeskill_list[ti].name .. "|r", timeleft)
+  local function HookUpTooltip()
+
+    -- hook pfPanelWidgetClock:Tooltip
+    local delayTooltipHook = CreateFrame("Frame")
+    local delayedExecutionTime = GetTime() + 1
+
+
+    delayTooltipHook:SetScript("OnUpdate", function()
+
+      if(delayedExecutionTime > GetTime()) then
+        return
       end
-    else
-      for pn in pfUI_cache["tradeskillcd"][realm_name] do
-        for ti in pfUI_cache["tradeskillcd"][realm_name][pn] do
-          local timeleft = FormatTimeleft(pfUI_cache["tradeskillcd"][realm_name][pn][ti])
-          unknown = false
-          GameTooltip:AddDoubleLine(pn .. ColorText("white", " -> " .. tradeskill_list[ti].name), timeleft)
+
+
+      if pfUI.panel and pfPanelWidgetClock then
+        --local widget_clock = getglobal("pfPanelWidgetClock")
+        pfPanelWidgetClock.Old_Tooltip_tradeskillcd = pfPanelWidgetClock.Tooltip
+        pfPanelWidgetClock.Tooltip = function()
+          local unknown = true
+          pfPanelWidgetClock.Old_Tooltip_tradeskillcd()
+          GameTooltip:AddLine(" ")
+          GameTooltip:AddLine(ColorText("grey", "Tradeskill Cooldowns"))
+          if config.show_current == "1" then
+            for ti in pfUI_cache["tradeskillcd"][realm_name][player_name] do
+              local timeleft = FormatTimeleft(pfUI_cache["tradeskillcd"][realm_name][player_name][ti])
+              unknown = false
+              GameTooltip:AddDoubleLine(ColorText("white", " -> " .. tradeskill_list[ti].name), timeleft)
+              -- GameTooltip:AddDoubleLine("|cffffffff -> " .. tradeskill_list[ti].name .. "|r", timeleft)
+            end
+          else
+            for pn in pfUI_cache["tradeskillcd"][realm_name] do
+              for ti in pfUI_cache["tradeskillcd"][realm_name][pn] do
+                local timeleft = FormatTimeleft(pfUI_cache["tradeskillcd"][realm_name][pn][ti])
+                unknown = false
+                GameTooltip:AddDoubleLine(pn .. ColorText("white", " -> " .. tradeskill_list[ti].name), timeleft)
+              end
+            end
+          end
+          if unknown then
+            GameTooltip:AddLine("Filler Tradeskill")
+            pfPanelWidgetClock.Old_Tooltip_tradeskillcd()
+          end
+          GameTooltip:Show()
         end
       end
-    end
-    if unknown then
-      widget_clock.Old_Tooltip_tradeskillcd()
-    end
-    GameTooltip:Show()
+
+
+
+      this:Hide()
+
+    end)
   end
 
   function pfUI.tradeskillcd:UpdateConfig()
@@ -319,6 +342,7 @@ pfUI:RegisterModule("tradeskillcd", function ()
     if event == "VARIABLES_LOADED" then
       config = C.tradecd
       ScanSpellbook()
+      HookUpTooltip()
     else
       ReadyAnnounce()
     end
